@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "bootstrap": "^5.3.6",
+    "react-bootstrap": "^2.10.10",
+    "react-router-dom": "^7.6.2",
+    "recharts": "^2.15.3"
+  }
+}

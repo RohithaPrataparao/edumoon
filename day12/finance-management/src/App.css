@@ -1,0 +1,227 @@
+/* Minimalism with Bold Typography for FinanceApp */
+body, html {
+  min-height: 100vh;
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  background: #97bde3;
+}
+
+body {
+  font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+  color: #464da5;
+  margin: 0;
+  padding: 0;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+  font-weight: 800;
+  letter-spacing: -1px;
+  color: #170ec8;
+  margin-bottom: 0.5em;
+}
+
+h1 {
+  font-size: 2.5rem;
+}
+h2 {
+  font-size: 2rem;
+}
+h3 {
+  font-size: 1.5rem;
+}
+
+.container, .main-content {
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 500px;
+  width: 100%;
+  background: #99afcd;
+  border-radius: 18px;
+  box-shadow: 0 2px 16px rgba(57, 40, 207, 0.714);
+  padding: 2rem 1.5rem;
+  margin-top: 2rem;
+  /* Fix: allow overflow for navbar collapse */
+  overflow: visible !important;
+  position: static !important;
+  z-index: auto !important;
+}
+
+@media (min-width: 900px) {
+  .container, .main-content {
+    max-width: 900px;
+    padding: 2.5rem 3rem;
+    margin-top: 2.5rem;
+    border-radius: 24px;
+    box-shadow: 0 4px 32px rgba(68, 91, 182, 0.786);
+  }
+  .neu-card, .neu-table {
+    padding: 2.5rem 2rem;
+    border-radius: 24px;
+  }
+  .d-flex {
+    flex-direction: row !important;
+    align-items: flex-start !important;
+    gap: 2rem !important;
+  }
+}
+
+.table th, .table td {
+  font-size: 1.05rem;
+  font-weight: 500;
+}
+
+.btn, .nav-link, button {
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  border-radius: 8px;
+}
+
+.navbar-brand {
+  font-size: 1.6rem;
+  font-weight: 900;
+  letter-spacing: -2px;
+}
+
+/* Remove clutter */
+hr, .card-footer, .card-header {
+  display: none;
+}
+
+/* Subtle hover for tables */
+.table-hover tbody tr:hover {
+  background: #416aa9;
+}
+
+/* Responsive tweaks */
+@media (max-width: 600px) {
+  .container, .main-content {
+    max-width: 98vw;
+    padding: 1rem 0.5rem;
+    margin-top: 1rem;
+  }
+  .neu-card, .neu-table {
+    padding: 1rem 0.5rem;
+    border-radius: 18px;
+  }
+  h1 { font-size: 2rem; }
+  h2 { font-size: 1.4rem; }
+  .d-flex {
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 1rem !important;
+  }
+}
+
+/* Glassmorphism Styles (using current color palette) */
+.container, .main-content, .neu-card, .neu-table, .neu-navbar {
+  background: rgba(153, 175, 205, 0.35); /* #99afcd with opacity */
+  border-radius: 18px;
+  box-shadow: 0 8px 32px 0 rgba(68, 91, 182, 0.18);
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  border: 1.5px solid rgba(151, 189, 227, 0.25);
+}
+
+.neu-btn, .btn, .nav-link, button {
+  background: rgba(128, 159, 206, 0.45); /* #809fce with opacity */
+  color: #182761;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px 0 rgba(68, 91, 182, 0.10);
+  backdrop-filter: blur(8px) saturate(180%);
+  -webkit-backdrop-filter: blur(8px) saturate(180%);
+  border: 1px solid rgba(169, 188, 218, 0.678);
+  transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+}
+
+.neu-btn:hover, .btn:hover, .nav-link:hover, button:hover {
+  background: rgba(116, 154, 207, 0.55); /* #749acf with opacity */
+  color: #170ec8;
+  box-shadow: 0 4px 16px 0 rgba(72, 82, 120, 0.599);
+}
+
+.neu-input, input, .form-select, select {
+  background: rgba(106, 128, 170, 0.273); /* #1f5bd2 with opacity */
+  color: #182761;
+  border-radius: 10px;
+  border: 1px solid rgba(31, 91, 210, 0.18);
+  box-shadow: 0 1px 4px 0 rgba(68, 91, 182, 0.10);
+  backdrop-filter: blur(6px) saturate(180%);
+  -webkit-backdrop-filter: blur(6px) saturate(180%);
+}
+
+.table th, .table td {
+  background: rgba(153, 175, 205, 0.25);
+  color: #170ec8;
+  border: 1px solid rgba(151, 189, 227, 0.18);
+  backdrop-filter: blur(8px) saturate(180%);
+  -webkit-backdrop-filter: blur(8px) saturate(180%);
+}
+
+.table-hover tbody tr:hover {
+  background: rgba(65, 106, 169, 0.25);
+}
+
+/* Glassmorphism for dark mode */
+body.dark-mode .container, body.dark-mode .main-content, body.dark-mode .neu-card, body.dark-mode .neu-table, body.dark-mode .neu-navbar {
+  background: rgba(138, 149, 189, 0.545) !important;
+  color: #e0e6f0 !important;
+  box-shadow: 0 8px 32px 0 rgba(0,0,0,0.35);
+  border: 1.5px solid rgba(24, 28, 36, 0.25);
+}
+body.dark-mode .neu-btn, body.dark-mode .btn, body.dark-mode .nav-link, body.dark-mode button {
+  background: rgba(100, 109, 143, 0.55) !important;
+  color: #e0e6f0 !important;
+  border: 1px solid rgba(35, 40, 58, 0.18);
+  box-shadow: 0 2px 8px 0 rgba(0,0,0,0.18);
+}
+body.dark-mode .neu-btn:hover, body.dark-mode .btn:hover, body.dark-mode .nav-link:hover, body.dark-mode button:hover {
+  background: rgba(89, 97, 117, 0.65) !important;
+  color: #ffd700 !important;
+}
+body.dark-mode .neu-input, body.dark-mode input, body.dark-mode .form-select, body.dark-mode select {
+  background: rgba(137, 146, 165, 0.56);
+  color: #e0e6f0;
+  border: 1px solid rgba(31, 91, 210, 0.12);
+}
+body.dark-mode .table th, body.dark-mode .table td {
+  background: rgba(143, 148, 169, 0.509) !important;
+  color: #e0e6f0 !important;
+  border: 1px solid rgba(24, 28, 36, 0.18);
+}
+body.dark-mode .table-hover tbody tr:hover {
+  background: rgba(139, 149, 172, 0.491) !important;
+}
+
+/* Dark mode toggle button */
+.dark-toggle {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  z-index: 9999;
+  background: #7a8098;
+  color: #e0e6f0;
+  border: none;
+  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  box-shadow: 0 2px 8px #181c24;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+@media (max-width: 600px) {
+  .dark-toggle {
+    top: 4.5rem;
+    right: 1rem;
+    width: 38px;
+    height: 38px;
+    font-size: 1.2rem;
+  }
+}

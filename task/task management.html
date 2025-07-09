@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Management App</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f4f6fb;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 400px;
+            margin: 40px auto;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 24px rgba(38, 21, 72, 0.97);
+            padding: 32px 24px 24px 24px;
+        }
+        h2 {
+            text-align: center;
+            color: #202045;
+            margin-bottom: 24px;
+        }
+        .task-input {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+        .task-input input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 16px;
+        }
+        .task-input button {
+            padding: 10px 18px;
+            background: hwb(225 47% 23%);
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .task-input button:hover {
+            filter: brightness(0.9);
+        }
+        ul.task-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        ul.task-list li {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #f7f9fc;
+            margin-bottom: 10px;
+            padding: 10px 14px;
+            border-radius: 6px;
+            font-size: 16px;
+            transition: background 0.2s;
+        }
+        ul.task-list li.completed {
+            text-decoration: line-through;
+            color: #aaa;
+            background: #e2e8f0;
+        }
+        .actions button {
+            background: none;
+            border: none;
+            color: #4f8cff;
+            font-size: 16px;
+            cursor: pointer;
+            margin-left: 8px;
+            transition: color 0.2s, background 0.2s;
+            border-radius: 6px;
+            padding: 4px 10px;
+        }
+        .actions button:hover {
+            color: #e11d48;
+        }
+        .actions button.complect-btn:hover {
+            background: hwb(225 47% 23%);
+            color: #fff;
+        }
+        .filter-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        .filter-buttons button {
+            background: none;
+            border: none;
+            color: #0b0458;
+            font-size: 16px;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+        .filter-buttons button:hover {
+            color: hwb(225 11% 64%);
+        }
+        #taskCounter {
+            font-size: 14px;
+            color: #434067;
+        }
+        #signOutBtn {
+            margin-top: 16px;
+            background: hwb(225 47% 23%);
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            padding: 10px 18px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        #signOutBtn:hover {
+            filter: brightness(0.9);
+        }
+        .task-view-selector {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+        .task-view-selector button {
+            background: none;
+            border: 1px solid #0b0458;
+            color: #0b0458;
+            font-size: 15px;
+            border-radius: 6px;
+            padding: 6px 14px;
+            cursor: pointer;
+            transition: background 0.2s, color 0.2s;
+        }
+        .task-view-selector button.active, .task-view-selector button:hover {
+            background: hwb(225 47% 23%);
+            color: #fff;
+        }
+        .task-list li.today-task {
+            border-left: 5px solid #4f8cff;
+            background: #eaf2ff;
+        }
+        .task-list li.month-task {
+            border-left: 5px solid #fbbf24;
+            background: #fffbe6;
+        }
+        .task-list li.year-task {
+            border-left: 5px solid #10b981;
+            background: #e6fff6;
+        }
+    </style>
+</head>
+<body>
+        <div class="container" id="registerContainer" style="display:none;">
+            <h2>Sign Up</h2>
+            <form onsubmit="event.preventDefault(); register();">
+                <div class="task-input" style="flex-direction:column;gap:12px;">
+                    <input type="text" id="regUsername" placeholder="Username" autocomplete="username" required>
+                    <input type="password" id="regPassword" placeholder="Password" autocomplete="new-password" required>
+                    <button type="submit">Register</button>
+                </div>
+            </form>
+            <div id="registerError" style="color:#e11d48;text-align:center;margin-top:10px;"></div>
+            <div style="text-align:center;margin-top:10px;">
+                <a href="#" onclick="showLogin();return false;">Already have an account? Sign In</a>
+            </div>
+        </div>
+        <div class="container" id="signinContainer">
+            <h2>Sign In</h2>
+            <form onsubmit="event.preventDefault(); signIn();">
+                <div class="task-input" style="flex-direction:column;gap:12px;">
+                    <input type="text" id="username" placeholder="Username" autocomplete="username" required>
+                    <input type="password" id="password" placeholder="Password" autocomplete="current-password" required>
+                    <button type="submit">Sign In</button>
+                </div>
+            </form>
+            <div id="signinError" style="color:#e11d48;text-align:center;margin-top:10px;"></div>
+            <div style="text-align:center;margin-top:10px;">
+                <a href="#" onclick="showRegister();return false;">Don't have an account? Sign Up</a>
+            </div>
+        </div>
+        <div class="container" id="appContainer" style="display:none;">
+            <h2>Task Management</h2>
+            <div class="task-view-selector">
+                <button id="view-today" onclick="setTaskView('today')">Today's Tasks</button>
+                <button id="view-month" onclick="setTaskView('month')">Monthly Tasks</button>
+                <button id="view-year" onclick="setTaskView('year')">Yearly Tasks</button>
+            </div>
+            <div id="currentViewMsg" style="text-align:center;font-size:15px;color:#0b0458;margin-bottom:8px;"></div>
+            <div class="task-input">
+                <input type="text" id="taskInput" placeholder="Add a new task...">
+                <button onclick="addTask()">Add</button>
+            </div>
+            <div id="addTaskHelper" style="text-align:center;font-size:13px;color:#666;margin-bottom:10px;"></div>
+            <div class="filter-buttons">
+                <button onclick="setFilter('all')" id="filterAll">All</button>
+                <button onclick="setFilter('pending')" id="filterPending">Pending</button>
+                <button onclick="setFilter('completed')" id="filterCompleted">Completed</button>
+            </div>
+            <div id="taskCounter"></div>
+            <ul class="task-list" id="taskList"></ul>
+            <button id="signOutBtn" onclick="signOut()">Sign Out</button>
+        </div>
+        <script>
+        // Registration logic
+        function register() {
+            const username = document.getElementById('regUsername').value.trim();
+            const password = document.getElementById('regPassword').value;
+            const errorDiv = document.getElementById('registerError');
+            if (!username || !password) {
+                errorDiv.textContent = 'Please fill all fields.';
+                return;
+            }
+            if (localStorage.getItem('user_' + username)) {
+                errorDiv.textContent = 'Username already exists!';
+                return;
+            }
+            localStorage.setItem('user_' + username, JSON.stringify({ username, password }));
+            errorDiv.textContent = '';
+            alert('Registration successful! Please sign in.');
+            showLogin();
+        }
+        function showRegister() {
+            document.getElementById('signinContainer').style.display = 'none';
+            document.getElementById('registerContainer').style.display = '';
+        }
+        function showLogin() {
+            document.getElementById('registerContainer').style.display = 'none';
+            document.getElementById('signinContainer').style.display = '';
+        }
+        // Sign In logic
+        function signIn() {
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value;
+            const errorDiv = document.getElementById('signinError');
+            const userData = localStorage.getItem('user_' + username);
+            if (userData) {
+                const user = JSON.parse(userData);
+                if (user.password === password) {
+                    document.getElementById('signinContainer').style.display = 'none';
+                    document.getElementById('appContainer').style.display = '';
+                    errorDiv.textContent = '';
+                    localStorage.setItem('currentUser', username);
+                } else {
+                    errorDiv.textContent = 'Invalid password!';
+                }
+            } else {
+                errorDiv.textContent = 'User not found!';
+            }
+        }
+        function signOut() {
+            document.getElementById('signinContainer').style.display = '';
+            document.getElementById('appContainer').style.display = 'none';
+            document.getElementById('username').value = '';
+            document.getElementById('password').value = '';
+            document.getElementById('signinError').textContent = '';
+            localStorage.removeItem('currentUser');
+        }
+        // Auto-login if user is already signed in
+        document.addEventListener('DOMContentLoaded', function() {
+            if (localStorage.getItem('currentUser')) {
+                document.getElementById('signinContainer').style.display = 'none';
+                document.getElementById('appContainer').style.display = '';
+            }
+        });
+        // Move all task logic below here
+        let filter = 'all';
+        let taskView = 'today';
+        function setTaskView(view) {
+            taskView = view;
+            updateTaskViewButtons();
+            renderTasks();
+        }
+        function updateTaskViewButtons() {
+            document.getElementById('view-today').classList.toggle('active', taskView === 'today');
+            document.getElementById('view-month').classList.toggle('active', taskView === 'month');
+            document.getElementById('view-year').classList.toggle('active', taskView === 'year');
+            // Show current view message and helper
+            const msg = document.getElementById('currentViewMsg');
+            const helper = document.getElementById('addTaskHelper');
+            if (taskView === 'today') {
+                msg.textContent = "You are in: Today's Tasks";
+                helper.textContent = "Adding a task will set its date to today automatically.";
+            } else if (taskView === 'month') {
+                msg.textContent = "You are in: Monthly Tasks";
+                helper.textContent = "You will be prompted for a date in this month (not today) when adding a task.";
+            } else if (taskView === 'year') {
+                msg.textContent = "You are in: Yearly Tasks";
+                helper.textContent = "You will be prompted for a date in this year (not this month) when adding a task.";
+            }
+        }
+        function getTodayStr() {
+            const d = new Date();
+            return d.toISOString().slice(0, 10);
+        }
+        function getMonthStr() {
+            const d = new Date();
+            return d.toISOString().slice(0, 7);
+        }
+        function getYearStr() {
+            const d = new Date();
+            return d.getFullYear().toString();
+        }
+        function saveTasks(tasks) {
+            const user = localStorage.getItem('currentUser');
+            if (user) localStorage.setItem('tasks_' + user, JSON.stringify(tasks));
+        }
+        function loadTasks() {
+            const user = localStorage.getItem('currentUser');
+            if (user) {
+                const t = localStorage.getItem('tasks_' + user);
+                return t ? JSON.parse(t) : [];
+            }
+            return [];
+        }
+        function addTask() {
+            const input = document.getElementById('taskInput');
+            const taskText = input.value.trim();
+            if (taskText === '') return;
+            const now = new Date();
+            let taskDate = now.toISOString().slice(0, 10);
+            if (taskView === 'month') {
+                // Prompt user for a date in this month (not today)
+                const monthStr = now.toISOString().slice(0, 7);
+                const todayStr = now.toISOString().slice(0, 10);
+                let userDate = prompt(`Enter a date for this task in YYYY-MM-DD format (this month, not today):`, monthStr + '-');
+                if (!userDate) return;
+                // Validate format
+                if (!/^\d{4}-\d{2}-\d{2}$/.test(userDate)) {
+                    alert('Invalid date format. Please use YYYY-MM-DD.');
+                    return;
+                }
+                if (!userDate.startsWith(monthStr)) {
+                    alert('Date must be in this month.');
+                    return;
+                }
+                if (userDate === todayStr) {
+                    alert('Date must not be today.');
+                    return;
+                }
+                taskDate = userDate;
+            } else if (taskView === 'year') {
+                // Prompt user for a date in this year (not this month)
+                const yearStr = now.getFullYear().toString();
+                const monthStr = now.toISOString().slice(0, 7);
+                let userDate = prompt(`Enter a date for this task in YYYY-MM-DD format (this year, not this month):`, yearStr + '-');
+                if (!userDate) return;
+                if (!/^\d{4}-\d{2}-\d{2}$/.test(userDate)) {
+                    alert('Invalid date format. Please use YYYY-MM-DD.');
+                    return;
+                }
+                if (!userDate.startsWith(yearStr)) {
+                    alert('Date must be in this year.');
+                    return;
+                }
+                if (userDate.startsWith(monthStr)) {
+                    alert('Date must not be in this month.');
+                    return;
+                }
+                taskDate = userDate;
+            }
+            const task = {
+                text: taskText,
+                completed: false,
+                date: taskDate
+            };
+            const tasks = loadTasks();
+            tasks.push(task);
+            saveTasks(tasks);
+            input.value = '';
+            renderTasks();
+        }
+        function deleteTask(btn) {
+            const idx = btn.closest('li').dataset.idx;
+            const tasks = loadTasks();
+            tasks.splice(idx, 1);
+            saveTasks(tasks);
+            renderTasks();
+        }
+        function completeTask(btn) {
+            const idx = btn.closest('li').dataset.idx;
+            const tasks = loadTasks();
+            tasks[idx].completed = !tasks[idx].completed;
+            saveTasks(tasks);
+            renderTasks();
+        }
+        function setFilter(f) {
+            filter = f;
+            applyFilter();
+            updateFilterButtons();
+        }
+        function applyFilter() {
+            const tasks = document.querySelectorAll('#taskList li');
+            tasks.forEach(li => {
+                if (filter === 'all') {
+                    li.style.display = '';
+                } else if (filter === 'completed') {
+                    li.style.display = li.classList.contains('completed') ? '' : 'none';
+                } else if (filter === 'pending') {
+                    li.style.display = li.classList.contains('completed') ? 'none' : '';
+                }
+            });
+        }
+        function renderTasks() {
+            const tasks = loadTasks();
+            const todayStr = getTodayStr();
+            const monthStr = getMonthStr();
+            const yearStr = getYearStr();
+            let show = [];
+            let viewLabel = '';
+            if (taskView === 'today') {
+                show = tasks.filter(t => t.date === todayStr);
+                viewLabel = "Today's Tasks";
+            } else if (taskView === 'month') {
+                show = tasks.filter(t => t.date.startsWith(monthStr) && t.date !== todayStr);
+                viewLabel = "Monthly Tasks (excluding today)";
+            } else if (taskView === 'year') {
+                show = tasks.filter(t => t.date.startsWith(yearStr) && !t.date.startsWith(monthStr));
+                viewLabel = "Yearly Tasks (excluding this month)";
+            }
+            const ul = document.getElementById('taskList');
+            ul.innerHTML = '';
+            // Add label above the list
+            let labelDiv = document.getElementById('taskViewLabel');
+            if (!labelDiv) {
+                labelDiv = document.createElement('div');
+                labelDiv.id = 'taskViewLabel';
+                labelDiv.style.textAlign = 'center';
+                labelDiv.style.fontWeight = 'bold';
+                labelDiv.style.margin = '10px 0 8px 0';
+                ul.parentNode.insertBefore(labelDiv, ul);
+            }
+            labelDiv.textContent = viewLabel;
+            show.forEach((task, idx) => {
+                const li = document.createElement('li');
+                if (task.completed) li.classList.add('completed');
+                // Add class for time period
+                if (taskView === 'today') {
+                    li.classList.add('today-task');
+                } else if (taskView === 'month') {
+                    li.classList.add('month-task');
+                } else if (taskView === 'year') {
+                    li.classList.add('year-task');
+                }
+                li.dataset.idx = tasks.indexOf(task);
+                li.innerHTML = `
+                    <span>${task.text}</span>
+                    <span class="actions">
+                        <button class="complect-btn" onclick="completeTask(this)">${task.completed ? 'Undo' : 'Complect'}</button>
+                        <button onclick="deleteTask(this)">Delete</button>
+                    </span>
+                `;
+                ul.appendChild(li);
+            });
+            updateCounterCustom(show);
+            updateFilterButtons();
+        }
+        function updateCounterCustom(show) {
+            const total = show.length;
+            const completed = show.filter(t => t.completed).length;
+            const pending = total - completed;
+            document.getElementById('taskCounter').textContent = `Total: ${total} | Completed: ${completed} | Pending: ${pending}`;
+        }
+        function updateFilterButtons() {
+            document.getElementById('filterAll').style.fontWeight = filter === 'all' ? 'bold' : 'normal';
+            document.getElementById('filterPending').style.fontWeight = filter === 'pending' ? 'bold' : 'normal';
+            document.getElementById('filterCompleted').style.fontWeight = filter === 'completed' ? 'bold' : 'normal';
+        }
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('taskInput').addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') addTask();
+            });
+            setTaskView('today');
+            renderTasks();
+        });
+        </script>
+    </body>
+</html>
